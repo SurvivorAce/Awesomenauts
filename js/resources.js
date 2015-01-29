@@ -8,7 +8,7 @@ game.resources = [
 
 	 {name: "background-tiles", type:"image", src: "data/img/background-tiles.png"},
 	 {name: "meta-tiles", type:"image", src: "data/img/meta-tiles.png"},
-	 {name: "player", type:"image", src: "data/img/archer.png"},
+	 {name: "player", type:"image", src: "data/img/xerus.png"},
 
 	/* Atlases 
 	 * @example
