@@ -12,6 +12,7 @@ game.PlayerEntity = me.Entity.extend({
 		}]);
 		//Sets current position
 		this.body.setVelocity(5, 20);
+		me.game.viewport.follow(this.pos, me.game.viewport.AXIS.BOTH);
 
 		this.renderable.addAnimation("idle", [78]);
 		this.renderable.addAnimation("walk", [143, 144, 145, 146, 147, 148, 149, 150, 151], 80);
@@ -45,4 +46,94 @@ game.PlayerEntity = me.Entity.extend({
 		this._super(me.Entity, "update", [delta]);
 		return true;
 	}
+});
+
+game.PlayerBaseEntity = me.Entity.extend ({
+	init: function(x, y, settings) {
+		this._super(me.Entity, 'init', [x, y, {
+			image: "tower",
+			width: 100,
+			height: 100,
+			spritewidth: "100",
+			spriteheight: "100",
+			getShape: function() {
+				return (new me.Rect(0, 0, 100, 100)).toPolygon();
+			}
+		}]);
+
+		this.broken = false;
+		this.health = 10;
+		this.alwaysUpdate = true;
+		this.body.onCollision = this.onCollision.bind(this);
+
+		this.type = "PlayerBaseEntity";
+
+		this.renderable.addAnimation("idle", [0]);
+		this.renderable.addAnimation("broken", [1]);
+		this.renderable.setCurrentAnimation("idle");
+
+	},
+
+	update:function(delta)  {
+		if(this.health<=0) {
+			this.broken = true;
+			this.renderable.setCurrentAnimation("broken");
+		}
+
+		this.body.update(delta);
+
+		this._super(me.Entity, "update", [delta]);
+		return true;
+
+	},
+
+	onCollision: function() {
+
+	}
+
+});
+
+game.EnemyBaseEntity = me.Entity.extend ({
+	init: function(x, y, settings) {
+		this._super(me.Entity, 'init', [x, y, {
+			image: "tower",
+			width: 100,
+			height: 100,
+			spritewidth: "100",
+			spriteheight: "100",
+			getShape: function() {
+				return (new me.Rect(0, 0, 100, 100)).toPolygon();
+			}
+		}]);
+
+		this.broken = false;
+		this.health = 10;
+		this.alwaysUpdate = true;
+		this.body.onCollision = this.onCollision.bind(this);
+
+		this.type = "EnemyBaseEntity";
+
+		this.renderable.addAnimation("idle", [0]);
+		this.renderable.addAnimation("broken", [1]);
+		this.renderable.setCurrentAnimation("idle");
+
+	},
+
+	update:function(delta)  {
+		if(this.health<=0) {
+			this.broken = true;
+			this.renderable.setCurrentAnimation("broken");
+		}
+
+		this.body.update(delta);
+
+		this._super(me.Entity, "update", [delta]);
+		return true;
+
+	},
+
+	onCollision: function() {
+		
+	}
+
 });
