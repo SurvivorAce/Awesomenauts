@@ -11,6 +11,7 @@ game.PlayerEntity = me.Entity.extend({
 			}	
 		}]);
 		this.type = "PlayerEntity";
+		this.health = 20;
 		//Sets current position
 		this.body.setVelocity(5, 20);
 		//*Keeps track of which direction your character is going
@@ -22,7 +23,7 @@ game.PlayerEntity = me.Entity.extend({
 
 		this.renderable.addAnimation("idle", [78]);
 		this.renderable.addAnimation("walk", [143, 144, 145, 146, 147, 148, 149, 150, 151], 80);
-		this.renderable.addAnimation("attack", [247, 248, 249, 250, 251, 252, 253, 254, 255, 256, 257, 258, 259], 70);
+		this.renderable.addAnimation("attack", [247, 248, 249, 250, 251, 252, 253, 254, 255, 256, 257, 258, 259], 50);
 
 		this.renderable.setCurrentAnimation("idle");
 
@@ -82,6 +83,7 @@ game.PlayerEntity = me.Entity.extend({
 
 	loseHealth: function(damage) {
 		this.health = this.health - damage;
+		console.log(this.health);
 	},
 
 	collideHandler: function(response){
@@ -106,6 +108,31 @@ game.PlayerEntity = me.Entity.extend({
 			if(this.renderable.isCurrentAnimation("attack") && this.now-this.lastHit >= 1000){
 				this.lastHit = this.now;
 				response.b.loseHealth();
+			}
+		}
+		else if(response.b.type==='EnemyCreep') {
+			var xdif = this.pos.x - response.b.pos.x;
+			var ydif = this.pos.y - response.b.pos.y;
+
+			if(xdif>0) {
+				this.pos.x = this.pos.x + 1;
+				if(this.facing==="right"){
+					this.body.vel.x = 0;
+				}
+			}
+			else {
+				this.pos.x = this.pos.x - 1;
+				if(this.facing==="left"){
+					this.body.vel.x = 0;
+				}
+			}
+
+			if(this.renderable.isCurrentAnimation("attack") && this.now-this.lastHit >= 1000
+					&& (Math.abs(ydif) <=40) && 
+					((xdif>0) && this.facing==="right") || ((xdif<0) && this.facing==="left")
+					){
+				this.lastHit = this.now;
+				response.b.loseHealth(1);
 			}
 		}
 	}
@@ -242,7 +269,18 @@ game.EnemyCreep = me.Entity.extend({
 			this.renderable.addAnimation("walk", [3, 4, 5], 80);
 			this.renderable.setCurrentAnimation("walk");
 	},
+
+			loseHealth: function(damage) {
+				this.health = this.health - damage;
+			},
+
 			update: function(delta) {
+				console.log(this.health);
+				if(this.health <= 0) {
+					//Removes a creep if health is less than or equal to 0
+					me.game.world.removeChild(this);
+				}
+
 				this.now = new Date().getTime();
 
 				this.body.vel.x -= this.body.accel.x * me.timer.tick;
