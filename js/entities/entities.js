@@ -11,13 +11,14 @@ game.PlayerEntity = me.Entity.extend({
 			}	
 		}]);
 		this.type = "PlayerEntity";
-		this.health = 20;
+		this.health = game.data.playerHealth;
 		//Sets current position
-		this.body.setVelocity(5, 20);
+		this.body.setVelocity(game.data.playerMoveSpeed, 20); 
 		//*Keeps track of which direction your character is going
 		this.facing = "right";
 		this.now = new Date().getTime();
 		this.lastHit = this.now;
+		this.dead = false;
 		this.lastAttack = new Date().getDate(); 
 		me.game.viewport.follow(this.pos, me.game.viewport.AXIS.BOTH);
 
@@ -31,6 +32,14 @@ game.PlayerEntity = me.Entity.extend({
 
 	update: function(delta) {
 		this.now = new Date().getTime();
+
+		if (this.health <= 0) {
+			this.dead = true;
+			this.pos.x = 10;
+			this.pos.y = 0;
+			this.health = game.data.playerHealth;
+		}
+
 		if(me.input.isKeyPressed("right")){
 			//Adds to the position of my x by the velocity defined above in 
 			//setVelocity() and multiplying it by me.timer.tick 
@@ -105,9 +114,9 @@ game.PlayerEntity = me.Entity.extend({
 			}
 
 
-			if(this.renderable.isCurrentAnimation("attack") && this.now-this.lastHit >= 1000){
+			if(this.renderable.isCurrentAnimation("attack") && this.now-this.lastHit >= game.data.playerAttackTimer) {
 				this.lastHit = this.now;
-				response.b.loseHealth();
+				response.b.loseHealth(game.data.playerAttack);
 			}
 		}
 		else if(response.b.type==='EnemyCreep') {
@@ -127,12 +136,11 @@ game.PlayerEntity = me.Entity.extend({
 				}
 			}
 
-			if(this.renderable.isCurrentAnimation("attack") && this.now-this.lastHit >= 1000
-					&& (Math.abs(ydif) <=40) && 
-					((xdif>0) && this.facing==="right") || ((xdif<0) && this.facing==="left")
-					){
+			if (this.renderable.isCurrentAnimation('attack') && this.now-this.lastHit >= game.data.playerAttackTimer && (Math.abs(ydif<=40) && 
+				((xdif>0) && this.facing==="left") || ((xdif<0) && this.facing==="right")
+				)){
 				this.lastHit = this.now;
-				response.b.loseHealth(1);
+				response.b.loseHealth(game.data.playerAttack1);
 			}
 		}
 	}
@@ -154,7 +162,7 @@ game.PlayerBaseEntity = me.Entity.extend ({
 		}]);
 
 		this.broken = false;
-		this.health = 10;
+		this.health = game.data.playerBaseHealth;
 		this.alwaysUpdate = true;
 		this.body.onCollision = this.onCollision.bind(this);
 
@@ -203,7 +211,7 @@ game.EnemyBaseEntity = me.Entity.extend ({
 		}]);
 
 		this.broken = false;
-		this.health = 10;
+		this.health = game.data.enemyBaseHealth;
 		this.alwaysUpdate = true;
 		this.body.onCollision = this.onCollision.bind(this);
 
@@ -253,7 +261,7 @@ game.EnemyCreep = me.Entity.extend({
 			}
 		}]);
 
-			this.health = 10;
+			this.health = game.data.enemyCreepHealth;
 			this.alwaysUpdate = true;
 			//this.attacking lets us know if the enemy is currently attacking
 			this.attacking = false;
@@ -305,11 +313,11 @@ game.EnemyCreep = me.Entity.extend({
 					//keeps moving the creep to the right to maintain its position
 					this.pos.x = this.pos.x + 1;
 					//checks that it has been at least 1 second since this creep hit a base 
-					if ((this.now-this.lastHit >= 1000)) {
+					if ((this.now-this.lastHit >= game.data.enemyCreepAttackTimer)) {
 						//updates the lasthit timer
 						this.lastHit = this.now;
 						//makes the player base call its loseHealth function and passes damage of 1
-						response.b.loseHealth(1);
+						response.b.loseHealth(game.data.enemyCreepAttack);
 					}
 				}
 				else if(response.b.type==='PlayerEntity') {
@@ -324,11 +332,11 @@ game.EnemyCreep = me.Entity.extend({
 						this.body.vel.x = 0;
 					}
 					//checks that it has been at least 1 second since this creep hit something
-					if ((this.now-this.lastHit >= 1000 && xdif>0)) {
+					if ((this.now-this.lastHit >= game.data.enemyCreepAttackTimer) && xdif>0) {
 						//updates the lasthit timer
 						this.lastHit = this.now;
 						//makes the player call its loseHealth function and passes damage of 1
-						response.b.loseHealth(1);		
+						response.b.loseHealth(game.data.enemyCreepAttack);
 					}			
 				}
 			}
