@@ -57,9 +57,7 @@ game.ExperienceManager = Object.extend({
 			this.gameOver(true);
 		}
 		else if(game.data.win === false && !this.gameOver) {
-			
-			this.gameOver = true;
-			me.save.exp = game.data.exp;
+			this.gameOver(false);
 		}
 		
 		return true;
