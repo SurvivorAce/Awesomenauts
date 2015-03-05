@@ -7,7 +7,7 @@ game.PlayerBaseEntity = me.Entity.extend ({
 			spritewidth: "100",
 			spriteheight: "100",
 			getShape: function() {
-				return (new me.Rect(0, 0, 100, 80)).toPolygon();
+				return (new me.Rect(0, 0, 100, 70)).toPolygon();
 			}
 		}]);
 
@@ -15,7 +15,6 @@ game.PlayerBaseEntity = me.Entity.extend ({
 		this.health = game.data.playerBaseHealth;
 		this.alwaysUpdate = true;
 		this.body.onCollision = this.onCollision.bind(this);
-
 		this.type = "PlayerBase";
 
 		this.renderable.addAnimation("idle", [0]);
@@ -30,7 +29,6 @@ game.PlayerBaseEntity = me.Entity.extend ({
 			game.data.win = false;
 			this.renderable.setCurrentAnimation("broken");
 		}
-
 		this.body.update(delta);
 
 		this._super(me.Entity, "update", [delta]);
@@ -40,7 +38,7 @@ game.PlayerBaseEntity = me.Entity.extend ({
 
 	loseHealth: function(damage){
 		this.health = this.health - damage;
-	}, 
+	}, 	
 
 	onCollision: function() {
 

@@ -15,7 +15,6 @@ game.EnemyBaseEntity = me.Entity.extend ({
 		this.health = game.data.enemyBaseHealth;
 		this.alwaysUpdate = true;
 		this.body.onCollision = this.onCollision.bind(this);
-
 		this.type = "EnemyBaseEntity";
 
 		this.renderable.addAnimation("idle", [0]);
@@ -30,7 +29,6 @@ game.EnemyBaseEntity = me.Entity.extend ({
 			game.data.win = true;
 			this.renderable.setCurrentAnimation("broken");
 		}
-
 		this.body.update(delta);
 
 		this._super(me.Entity, "update", [delta]);
