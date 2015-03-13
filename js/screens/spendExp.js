@@ -10,6 +10,7 @@ game.SpendExp = me.ScreenObject.extend({
 		me.input.bindKey(me.input.KEY.F3, "F3");
 		me.input.bindKey(me.input.KEY.F4, "F4");
 		me.input.bindKey(me.input.KEY.F5, "F5");
+		var exp1cost = ((game.data.exp1 + 1) * 10);
 
 		me.game.world.addChild(new (me.Renderable.extend({
 			init: function() {
@@ -20,7 +21,7 @@ game.SpendExp = me.ScreenObject.extend({
 			draw: function(renderer) {
 				this.font.draw(renderer.getContext(), "PRESS F1-F4 TO BUY, F5 TO SKIP", this.pos.x, this.pos.y);
 				this.font.draw(renderer.getContext(), "CURRENT EXP: " + game.data.exp.toString(), this.pos.x + 25, this.pos.y + 50);
-				this.font.draw(renderer.getContext(), "F1: INCREASE GOLD PRODUCTION: CURRENT LEVEL: " + game.data.exp1.toString() + " COST: " + ((game.data.exp1 + 1) * 10), this.pos.x + 75, this.pos.y + 100);
+				this.font.draw(renderer.getContext(), "F1: INCREASE GOLD PRODUCTION! CURRENT LEVEL: " + game.data.exp1.toString() + " COST: " + exp1cost, this.pos.x + 75, this.pos.y + 100);
 				this.font.draw(renderer.getContext(), "F2: ADD STARTING GOLD ", this.pos.x + 75, this.pos.y + 150);
 				this.font.draw(renderer.getContext(), "F3: INCREASE ATTACK DAMAGE ", this.pos.x + 75, this.pos.y + 200);
 				this.font.draw(renderer.getContext(), "F4: INCREASE STARTING HEALTH ", this.pos.x + 75, this.pos.y + 250);
@@ -30,7 +31,14 @@ game.SpendExp = me.ScreenObject.extend({
 
 		this.handler = me.event.subscribe(me.event.KEYDOWN, function (action, keyCode, edge) {
 			if (action === "F1") {
-
+				if(game.data.exp >= exp1cost) {
+					game.data.exp1 += 1;
+					game.data.exp -= exp1cost;
+					me.state.change(me.state.PLAY);
+				}
+				else {
+					console.log("not enough experience");
+				}
 			}
 			else if (action === "F2") {
 
