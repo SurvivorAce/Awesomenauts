@@ -126,9 +126,9 @@ game.PlayerEntity = me.Entity.extend({
 	},
 
 	iceShard: function() {
-		if(this.lastShard >= game.data.shardTimer && game.data.abilityy3 >= 0) {
+		if((this.now-this.lastShard) >= game.data.shardTimer*1000 && game.data.ability1 >= 0) {
 			this.lastShard = this.now;
-			var shard = me.pool.pull("shard", this.pos.x, this.pos.y, {});
+			var shard = me.pool.pull("shard", this.pos.x, this.pos.y, {}, this.facing);
 			me.game.world.addChild(shard, 10);
 		}
 	},
