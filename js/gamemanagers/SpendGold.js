@@ -58,7 +58,7 @@ game.SpendGold = Object.extend({
 				this.font.draw(renderer.getContext(), "Skill 1: Increase Damage. Current Level: " + game.data.skill1 + " Cost: " + ((game.data.skill1+1)*10), this.pos.x, this.pos.y + 50);
 				this.font.draw(renderer.getContext(), "Skill 2: Run Faster. Current Level: " + game.data.skil2 + " Cost: " + ((game.data.skill2+1)*10), this.pos.x, this.pos.y + 100);
 				this.font.draw(renderer.getContext(), "Skill 3: Increase Health. Current Level: " + game.data.skill3 + " Cost: " + ((game.data.skill3+1)*10), this.pos.x, this.pos.y + 150);
-				this.font.draw(renderer.getContext(), "Q Ability: Fireball. Current Level: " + game.data.ability1 + " Cost: " + ((game.data.ability1+1)*10), this.pos.x, this.pos.y + 200);
+				this.font.draw(renderer.getContext(), "Q Ability: Ice Shard. Current Level: " + game.data.ability1 + " Cost: " + ((game.data.ability1+1)*10), this.pos.x, this.pos.y + 200);
 				this.font.draw(renderer.getContext(), "W Ability: Attack Speed Increase. Current Level: " + game.data.ability2 + " Cost: " + ((game.data.ability2+1)*10), this.pos.x, this.pos.y + 250);
 				this.font.draw(renderer.getContext(), "E Ability: Increase Gold on Minion Kill. Current Level: " + game.data.ability3 + " Cost: " + ((game.data.ability3+1)*10), this.pos.x, this.pos.y + 300);
 			},

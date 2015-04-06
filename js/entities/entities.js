@@ -31,6 +31,7 @@ game.PlayerEntity = me.Entity.extend({
 	setPlayerTimers: function() {
 		this.now = new Date().getTime();
 		this.lastHit = this.now;
+		this.lastShard = this.now;
 		this.lastAttack = new Date().getDate(); 
 
 	},
@@ -59,6 +60,7 @@ game.PlayerEntity = me.Entity.extend({
 		this.now = new Date().getTime();
 		this.dead = this.checkifDead();
 		this.checkKeyPressesAndMove();
+		this.checkAbilityKeys();
 		this.setAnimation();
 		me.collision.check(this, true, this.collideHandler.bind(this), true);
 		this.body.update(delta);
@@ -109,6 +111,26 @@ game.PlayerEntity = me.Entity.extend({
 	jump: function() {
 		this.body.jumping = true;
 		this.body.vel.y -= this.body.accel.y * me.timer.tick;		
+	},
+
+	checkAbilityKeys: function() {
+		if(me.input.isKeyPressed("skill1")) {
+			this.iceShard();
+		}
+		else if(me.input.isKeyPressed("skill2")) {
+			//this.asIncrease();
+		}
+		else if(me.input.isKeyPressed("skill3 ")) {
+			//this.moreGold();
+		}		
+	},
+
+	iceShard: function() {
+		if(this.lastShard >= game.data.shardTimer && game.data.abilityy3 >= 0) {
+			this.lastShard = this.now;
+			var shard = me.pool.pull("shard", this.pos.x, this.pos.y, {});
+			me.game.world.addChild(shard, 10);
+		}
 	},
 
 	setAnimation: function() {
