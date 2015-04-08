@@ -60,6 +60,7 @@
 		<script type="text/javascript" src="js/entities/EnemyCreep.js"></script>
 		<script type="text/javascript" src="js/entities/HUD.js"></script>
 		<script type="text/javascript" src="js/entities/ShardThrow.js"></script>
+		<script type="text/javascript" src="js/entities/MiniMap.js"></script>
 
 		<script type="text/javascript" src="js/screens/title.js"></script>
 		<script type="text/javascript" src="js/screens/play.js"></script>
