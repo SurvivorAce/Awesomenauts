@@ -29,9 +29,9 @@ game.PlayScreen = me.ScreenObject.extend({
 		me.game.world.addChild(game.data.minimap, 30);		
 
 		me.input.bindKey(me.input.KEY.B, "buy");
-		me.input.bindKey(me.input.KEY.Q, "skill1");
-		me.input.bindKey(me.input.KEY.W, "skill2");
-		me.input.bindKey(me.input.KEY.E, "skill3");
+		me.input.bindKey(me.input.KEY.Q, "ability1");
+		me.input.bindKey(me.input.KEY.W, "ability2");
+		me.input.bindKey(me.input.KEY.E, "ability3");
 		me.input.bindKey(me.input.KEY.RIGHT, "right");
 		me.input.bindKey(me.input.KEY.LEFT, "left");
 		me.input.bindKey(me.input.KEY.SPACE, "jump");				

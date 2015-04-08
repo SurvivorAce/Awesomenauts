@@ -33,14 +33,16 @@ game.PlayerEntity = me.Entity.extend({
 		this.lastHit = this.now;
 		this.lastShard = this.now;
 		this.lastAttack = new Date().getDate(); 
-
+		this.lastGold = this.now;
+		this.lastUse = this.now;
 	},
 
 	setAttributes: function() {
 		this.health = game.data.playerHealth;
 		//Sets current position
 		this.body.setVelocity(game.data.playerMoveSpeed, 20);		
-		this.attack = game.data.playerAttack;		
+		this.attack = game.data.playerAttack;	
+		//this.ability1 = game.data.ability1;	
 	},
 
 	setFlags: function() {
@@ -48,12 +50,14 @@ game.PlayerEntity = me.Entity.extend({
 		this.facing = "right";
 		this.dead = false;
 		this.attacking = false;
+		//this.attacking1 = false;
 	},
 
 	addAnimation: function() {
 		this.renderable.addAnimation("idle", [78]);
 		this.renderable.addAnimation("walk", [143, 144, 145, 146, 147, 148, 149, 150, 151], 80);
-		this.renderable.addAnimation("attack", [247, 248, 249, 250, 251, 252, 253, 254, 255, 256, 257, 258, 259], 50);
+		this.renderable.addAnimation("attack", [247, 248, 249, 250, 251, 252, 253, 254, 255, 256, 257, 258, 259], game.data.animationWindow);
+		//this.renderable.addAnimation("ability", [39, 40, 41, 42, 43, 44, 45], 50);
 	},
 
 	update: function(delta) {
@@ -90,7 +94,8 @@ game.PlayerEntity = me.Entity.extend({
 			this.jump();
 		}
 
-		this. attacking = me.input.isKeyPressed("attack");
+		this.attacking = me.input.isKeyPressed("attack");
+		//this.attacking1 = me.input.isKeyPressed("ability1");
 	},
 
 	moveRight: function() {
@@ -114,14 +119,14 @@ game.PlayerEntity = me.Entity.extend({
 	},
 
 	checkAbilityKeys: function() {
-		if(me.input.isKeyPressed("skill1")) {
+		if(me.input.isKeyPressed("ability1")) {
 			this.iceShard();
 		}
-		else if(me.input.isKeyPressed("skill2")) {
-			//this.asIncrease();
+		else if(me.input.isKeyPressed("ability2")) {
+			this.asIncrease();
 		}
-		else if(me.input.isKeyPressed("skill3 ")) {
-			//this.moreGold();
+		else if(me.input.isKeyPressed("ability3")) {
+			this.moreGold();
 		}		
 	},
 
@@ -130,6 +135,25 @@ game.PlayerEntity = me.Entity.extend({
 			this.lastShard = this.now;
 			var shard = me.pool.pull("shard", this.pos.x, this.pos.y, {}, this.facing);
 			me.game.world.addChild(shard, 10);
+		}
+	},
+
+	asIncrease: function() {
+		if((this.now-this.lastUse) >= game.data.aSpeedTimer*1000 && game.data.ability2 >= 0) {
+			this.lastUse = this.now;
+			game.data.animationWindow -= ((game.data.skill2 +1)* 10);
+			console.log("Current Attack Frame: " + game.data.animationWindow);
+		}
+	},	
+
+	moreGold: function() {
+		if((this.now-this.lastGold) >= game.data.goldTimer*1000 && game.data.ability3 >= 0) {
+			this.lastGold = this.now;
+			if(game.data.enemyCreepHealth <= game.data.playerAttack || game.data.ability1) {
+				//adds one gold for a creep kill
+				game.data.gold += ((game.data.ability3 +1)* 2);
+				console.log("Current gold: " + game.data.gold);
+			}
 		}
 	},
 
@@ -154,6 +178,28 @@ game.PlayerEntity = me.Entity.extend({
 		else if(!this.renderable.isCurrentAnimation("attack")){
 			this.renderable.setCurrentAnimation("idle");
 		}
+
+		// if(this.attacking1){
+		// 	if(!this.renderable.isCurrentAnimation("ability1")){
+		// 		//Sets the current animation to attack and once that is over
+		// 		//goes back to the idle animation
+		// 		this.renderable.setCurrentAnimation("ability1", "idle");
+		// 		//Makes it so that the next time we start this sequence we begin
+		// 		//from the first animation, not wherever we left off when we
+		// 		//switched to another animation
+		// 		this.renderable.setAnimationFrame();
+		// 	}
+		// }				
+
+		// else if(this.body.vel.x !== 0 && !this.renderable.isCurrentAnimation("ability1")){
+		// 	if(!this.renderable.isCurrentAnimation("walk")){
+		// 		this.renderable.setCurrentAnimation("walk");
+		// 	}
+		// }
+		// else if(!this.renderable.isCurrentAnimation("ability1")){
+		// 	this.renderable.setCurrentAnimation("idle");
+		// }
+
 	},
 
 	loseHealth: function(damage) {
@@ -228,7 +274,7 @@ game.PlayerEntity = me.Entity.extend({
 	
 		if(response.b.health <= game.data.playerAttack) {
 			//adds one gold for a creep kill
-			game.data.gold += 1;
+			game.data.gold += 5;
 			console.log("Current gold: " + game.data.gold);
 		}
 

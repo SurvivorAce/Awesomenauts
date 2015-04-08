@@ -42,7 +42,7 @@ game.ShardThrow = me.Entity.extend({
 			//get gold so I added this so you get gold on ALL creep kills
 			if(response.b.health < game.data.ability1) {
 				//adds one gold for a creep kill
-				game.data.gold += 1;
+				game.data.gold += 5;
 				console.log("Current gold: " + game.data.gold);
 			}
 		}

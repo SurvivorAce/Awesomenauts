@@ -17,7 +17,7 @@ game.MiniPlayerLocation = me.Entity.extend ({
 		ctx.strokeStyle = "blue";
 		ctx.lineWidth = 2;
 
-		ctx.arc(this.r + 2, this.r + 2, this.r, 0, Math.PI*2);
+		ctx.arc(this.r + 2, this.r +2, this.r, 0, Math.PI*2);
 		ctx.fill();
 		ctx.stroke();
 

@@ -15,7 +15,7 @@ game.LoadProfile = me.ScreenObject.extend({
 
 		me.game.world.addChild(new (me.Renderable.extend({
 			init: function() {
-				this._super(me.Renderable, 'init', [10, 10, 300, 50]);
+				this._super(me.Renderable, 'init', [250, 60, 300, 50]);
 				this.font = new me.Font("Arial", 26, "white");
 			},
 
