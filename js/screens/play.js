@@ -55,6 +55,6 @@ game.PlayScreen = me.ScreenObject.extend({
 		game.data.player = me.pool.pull("player", x, y, {});
 		me.game.world.addChild(game.data.player, 7);
 		game.data.miniPlayer = me.pool.pull("miniplayer", 10, 10, {});
-		me.game.world.addChild(game.data.miniplayer, 31);
+		me.game.world.addChild(game.data.miniPlayer, 31);
 	}
 });
